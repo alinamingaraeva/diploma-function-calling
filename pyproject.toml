@@ -1,0 +1,9 @@
+[project]
+name = "diploma-function-calling"
+version = "0.1.0"
+dependencies = [
+    "openai>=1.0.0",
+    "pydantic-settings>=2.0.0",
+    "jinja2>=3.0.0",
+    "python-dotenv>=1.0.0",
+]
