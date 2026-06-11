@@ -2,7 +2,6 @@
 
 ## 1. Диаграмма компонентов
 
-```mermaid
 flowchart LR
     USER["Клиент<br/>Telegram / Web"] --> GW["<b>API Gateway</b><br/>nginx / Telegram Bot API<br/>auth, rate limit (10 RPM)"]
     GW --> SVC["<b>Service</b><br/>FastAPI<br/>Bulkhead: asyncio.Semaphore(3)"]
@@ -19,6 +18,7 @@ flowchart LR
     style LLM fill:#ecfdf5,stroke:#10b981,stroke-width:2px
     style DATA fill:#fef3c7,stroke:#f59e0b,stroke-width:2px
     style EXT fill:#e5e7eb,stroke:#6b7280,stroke-width:2px
+    
 Условные обозначения
 
 Точки отказоустойчивости: Circuit Breaker (на каждом провайдере), Fallback chain, Cache-Aside, Bulkhead.
