@@ -2,22 +2,8 @@
 
 ## 1. Диаграмма компонентов
 
-flowchart LR
-    USER["Клиент<br/>Telegram / Web"] --> GW["<b>API Gateway</b><br/>nginx / Telegram Bot API<br/>auth, rate limit (10 RPM)"]
-    GW --> SVC["<b>Service</b><br/>FastAPI<br/>Bulkhead: asyncio.Semaphore(3)"]
-    SVC --> CACHE["<b>Cache-Aside</b><br/>Redis, TTL 1h<br/>key: sha256(model + messages + temperature)"]
-    CACHE -- "miss" --> LLM["<b>LLM слой</b><br/>Fallback chain:<br/>1. gpt-4o-mini (primary)<br/>2. deepseek<br/>3. gpt-4o<br/>4. Ollama (локально)<br/>Circuit Breaker (aiobreaker) на каждого провайдера"]
-    CACHE -- "hit" --> SVC
-    LLM --> EXT["<b>Провайдеры</b><br/>polza.ai (агрегатор)<br/>Ollama (локальный VPS)"]
-    SVC --> DATA["<b>Data Layer</b><br/>Postgres: история диалогов,<br/>метрики, персональные данные (шифрование)<br/>Redis: кеш, сессии, rate limit counters"]
+<img width="5376" height="1485" alt="deepseek_mermaid_20260611_50e2dd" src="https://github.com/user-attachments/assets/cacf0fba-e34d-4bd9-976a-9675258742b2" />
 
-    style USER fill:#eef2ff,stroke:#6366f1,stroke-width:2px
-    style GW fill:#ecfdf5,stroke:#10b981,stroke-width:2px
-    style SVC fill:#eef2ff,stroke:#6366f1,stroke-width:2px
-    style CACHE fill:#fef3c7,stroke:#f59e0b,stroke-width:2px
-    style LLM fill:#ecfdf5,stroke:#10b981,stroke-width:2px
-    style DATA fill:#fef3c7,stroke:#f59e0b,stroke-width:2px
-    style EXT fill:#e5e7eb,stroke:#6b7280,stroke-width:2px
     
 Условные обозначения
 
