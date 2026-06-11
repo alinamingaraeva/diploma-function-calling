@@ -1,0 +1,52 @@
+model_list:
+  - model_name: gpt-4o-mini
+    litellm_params:
+      model: openai/gpt-4o-mini
+      api_base: https://api.polza.ai/v1   # замените на реальный адрес polza.ai, если другой
+      api_key: os.environ/POLZA_API_KEY
+      rpm: 10
+      timeout: 30
+  - model_name: deepseek
+    litellm_params:
+      model: deepseek/deepseek-v4-flash
+      api_base: https://api.polza.ai/v1
+      api_key: os.environ/POLZA_API_KEY
+      rpm: 10
+      timeout: 30
+  - model_name: gpt-4o
+    litellm_params:
+      model: openai/gpt-4o-2024-11-20
+      api_base: https://api.polza.ai/v1
+      api_key: os.environ/POLZA_API_KEY
+      rpm: 5
+      timeout: 45
+  - model_name: ollama-qwen
+    litellm_params:
+      model: ollama/qwen3:32b
+      api_base: http://localhost:11434
+      rpm: 2
+      timeout: 60
+
+router_settings:
+  routing_strategy: "usage-based"          # или "latency-based"
+  num_retries: 2
+  retry_after: 1
+  fallbacks: [
+    {"gpt-4o-mini": ["deepseek", "gpt-4o", "ollama-qwen"]}
+  ]
+  enable_loadbalancing: true
+  enable_fallback: true
+
+litellm_settings:
+  drop_params: true
+  set_verbose: false
+  cache: true
+  cache_params:
+    type: redis
+    host: localhost
+    port: 6379
+    ttl: 3600
+
+general_settings:
+  master_key: sk-anything            # для админки, можно оставить как есть
+  database_url: sqlite:///litellm.db
